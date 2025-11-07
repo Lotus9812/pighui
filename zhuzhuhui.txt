@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猪猪辉的争鲜之旅</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: #fff5f5;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            border: 8px solid #ff6b6b;
+        }
+        
+        .sushi-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 20%, transparent 20%, transparent 100%),
+                radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.1) 20%, transparent 20%, transparent 100%);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border-bottom: 4px solid #ff4757;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 4px solid #ff6b6b;
+            box-shadow: 0 4px 8px rgba(255, 107, 107, 0.1);
+        }
+        
+        .price-item:hover {
+            background-color: #fff0f0;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(255, 107, 107, 0.15);
+        }
+        
+        .price-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #495057;
+            flex: 1;
+        }
+        
+        .price-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin-right: 15px;
+            min-width: 80px;
+        }
+        
+        .quantity-input {
+            width: 80px;
+            padding: 10px 12px;
+            border: 2px solid #ffcccc;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+            margin-right: 15px;
+            background-color: #fffafa;
+        }
+        
+        .quantity-input:focus {
+            border-color: #ff6b6b;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+        
+        .subtotal {
+            font-size: 17px;
+            font-weight: 600;
+            color: #2c3e50;
+            min-width: 100px;
+            text-align: right;
+        }
+        
+        .custom-item {
+            border-left-color: #ff9f43;
+            background-color: #fff9f2;
+        }
+        
+        .custom-price-input {
+            width: 150px;
+            padding: 10px 12px;
+            border: 2px solid #ffd8b5;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            transition: border-color 0.3s;
+            background-color: #fffaf5;
+        }
+        
+        .custom-price-input:focus {
+            border-color: #ff9f43;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 159, 67, 0.2);
+        }
+        
+        .summary {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(90deg, #ff6b6b, #ff8e8e);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ff4757;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+        
+        .summary-label {
+            font-size: 18px;
+        }
+        
+        .summary-value {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .total {
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            padding-top: 15px;
+            margin-top: 10px;
+            font-size: 22px;
+        }
+        
+        .instructions {
+            margin-top: 25px;
+            padding: 18px;
+            background-color: #fff0f0;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+            font-size: 15px;
+            color: #495057;
+        }
+        
+        .sushi-icons {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            font-size: 24px;
+            color: #ff6b6b;
+        }
+        
+        @media (max-width: 600px) {
+            .price-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .price-label, .price-value {
+                margin-bottom: 10px;
+            }
+            
+            .quantity-input, .custom-price-input {
+                margin: 10px 0;
+                width: 100%;
+            }
+            
+            .subtotal {
+                align-self: flex-end;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sushi-pattern"></div>
+        
+        <div class="header">
+            <h1>猪猪辉的争鲜之旅</h1>
+            <div class="subtitle">输入数量，自动计算总价和10%服务费</div>
+        </div>
+        
+        <div class="content">
+            <div class="sushi-icons">
+                <i class="fas fa-fish"></i>
+                <i class="fas fa-utensils"></i>
+                <i class="fas fa-leaf"></i>
+                <i class="fas fa-water"></i>
+                <i class="fas fa-dragon"></i>
+            </div>
+            
+            <div class="price-item">
+                <div class="price-label">8元</div>
+                <div class="price-value">8元/份</div>
+                <input type="number" class="quantity-input" id="quantity8" min="0" value="0">
+                <div class="subtotal" id="subtotal8">0元</div>
+            </div>
+            
+            <div class="price-item">
+                <div class="price-label">12元</div>
+                <div class="price-value">12元/份</div>
+                <input type="number" class="quantity-input" id="quantity12" min="0" value="0">
+                <div class="subtotal" id="subtotal12">0元</div>
+            </div>
+            
+            <div class="price-item">
+                <div class="price-label">16元</div>
+                <div class="price-value">16元/份</div>
+                <input type="number" class="quantity-input" id="quantity16" min="0" value="0">
+                <div class="subtotal" id="subtotal16">0元</div>
+            </div>
+            
+            <div class="price-item custom-item">
+                <div class="price-label">单点项目</div>
+                <input type="number" class="custom-price-input" id="customPrice" min="0" placeholder="输入单点金额" value="0">
+                <div class="subtotal" id="subtotalCustom">0元</div>
+            </div>
+            
+            <div class="summary">
+                <div class="summary-item">
+                    <div class="summary-label">商品小计：</div>
+                    <div class="summary-value" id="subtotal">0元</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">服务费(10%)：</div>
+                    <div class="summary-value" id="serviceFee">0元</div>
+                </div>
+                <div class="summary-item total">
+                    <div class="summary-label">总计：</div>
+                    <div class="summary-value" id="total">0元</div>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <p><strong>使用说明：</strong> 在8元、12元、16元商品的数量框中输入数量，单点项目直接输入金额，系统会自动计算小计、服务费和总计。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取所有输入框元素
+        const quantity8 = document.getElementById('quantity8');
+        const quantity12 = document.getElementById('quantity12');
+        const quantity16 = document.getElementById('quantity16');
+        const customPrice = document.getElementById('customPrice');
+        
+        // 获取所有显示小计的元素
+        const subtotal8 = document.getElementById('subtotal8');
+        const subtotal12 = document.getElementById('subtotal12');
+        const subtotal16 = document.getElementById('subtotal16');
+        const subtotalCustom = document.getElementById('subtotalCustom');
+        
+        // 获取总计相关元素
+        const subtotalElement = document.getElementById('subtotal');
+        const serviceFeeElement = document.getElementById('serviceFee');
+        const totalElement = document.getElementById('total');
+        
+        // 添加事件监听器
+        quantity8.addEventListener('input', calculateTotal);
+        quantity12.addEventListener('input', calculateTotal);
+        quantity16.addEventListener('input', calculateTotal);
+        customPrice.addEventListener('input', calculateTotal);
+        
+        // 计算总价的函数
+        function calculateTotal() {
+            // 获取数量值
+            const qty8 = parseInt(quantity8.value) || 0;
+            const qty12 = parseInt(quantity12.value) || 0;
+            const qty16 = parseInt(quantity16.value) || 0;
+            const priceCustom = parseFloat(customPrice.value) || 0;
+            
+            // 计算每种商品的小计
+            const st8 = qty8 * 8;
+            const st12 = qty12 * 12;
+            const st16 = qty16 * 16;
+            const stCustom = priceCustom;
+            
+            // 更新每种商品的小计显示
+            subtotal8.textContent = st8.toFixed(2) + '元';
+            subtotal12.textContent = st12.toFixed(2) + '元';
+            subtotal16.textContent = st16.toFixed(2) + '元';
+            subtotalCustom.textContent = stCustom.toFixed(2) + '元';
+            
+            // 计算商品总价
+            const subtotal = st8 + st12 + st16 + stCustom;
+            
+            // 计算服务费（10%）
+            const serviceFee = subtotal * 0.1;
+            
+            // 计算总计
+            const total = subtotal + serviceFee;
+            
+            // 更新显示
+            subtotalElement.textContent = subtotal.toFixed(2) + '元';
+            serviceFeeElement.textContent = serviceFee.toFixed(2) + '元';
+            totalElement.textContent = total.toFixed(2) + '元';
+        }
+        
+        // 页面加载时初始化计算
+        calculateTotal();
+    </script>
+</body>
+</html>
